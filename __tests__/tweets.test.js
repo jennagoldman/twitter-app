@@ -35,4 +35,25 @@ describe('tweet routes', () => {
         });
       });
   });
+
+  it('gets all tweets', async() => {
+    const tweets = await Tweet.create([
+      { handle: 'jennagoldman', text: 'this is a tweet' },
+      { handle: 'jennagoldman', text: 'this is also a tweet' },
+      { handle: 'jennagoldman', text: 'this is yet another tweet' },
+    ]);
+
+    return request(app)
+      .get('/api/v1/tweets')
+      .then(res => {
+        tweets.forEach(tweet => {
+          expect(res.body).toContainEqual({
+            _id: tweet._id.toString(),
+            handle: tweet.handle,
+            text: tweet.text,
+            __v: 0
+          });
+        });
+      });
+  });
 });
