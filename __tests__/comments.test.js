@@ -101,4 +101,29 @@ describe('comment routes', () => {
         });
       });
   });
+
+  it('deletes a comment by id', async() => {
+    const tweet = await Tweet.create({
+      handle: 'jennagoldman',
+      text: 'test tweet'
+    });
+
+    const comment = await Comment.create({
+      tweetId: tweet.id,
+      handle: 'chelseaspangler',
+      text: 'teehee'
+    });
+
+    return request(app)
+      .delete(`/api/v1/comments/${comment._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          tweetId: tweet.id,
+          handle: 'chelseaspangler',
+          text: 'teehee',
+          __v: 0
+        });
+      });
+  });
 });

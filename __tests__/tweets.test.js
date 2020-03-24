@@ -5,6 +5,7 @@ const app = require('../lib/app');
 const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 const Tweet = require('../lib/models/Tweet');
+const Comment = require('../lib/models/Comment');
 
 describe('tweet routes', () => {
   beforeAll(() => {
@@ -80,6 +81,12 @@ describe('tweet routes', () => {
       text: 'this is a tweet'
     });
 
+    const comment = await Comment.create({
+      tweetId: tweet.id,
+      handle: 'chelseaspangler',
+      text: 'hi'
+    });
+
     return request(app)
       .get(`/api/v1/tweets/${tweet._id}`)
       .then(res => {
@@ -87,6 +94,7 @@ describe('tweet routes', () => {
           _id: expect.any(String),
           handle: 'jennagoldman',
           text: 'this is a tweet',
+          comments: expect.any(Array),
           __v: 0
         });
       });
