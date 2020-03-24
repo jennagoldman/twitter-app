@@ -56,4 +56,22 @@ describe('tweet routes', () => {
         });
       });
   });
+
+  it('gets a tweet by id', async() => {
+    const tweet = await Tweet.create({
+      handle: 'jennagoldman',
+      text: 'this is a tweet'
+    });
+
+    return request(app)
+      .get(`/api/v1/tweets/${tweet._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          handle: 'jennagoldman',
+          text: 'this is a tweet',
+          __v: 0
+        });
+      });
+  });
 });
