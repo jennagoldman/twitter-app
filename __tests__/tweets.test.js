@@ -93,4 +93,22 @@ describe('tweet routes', () => {
         });
       });
   });
+
+  it('deletes a tweet by id', async() => {
+    const tweet = await Tweet.create({
+      handle: 'jennagoldman',
+      text: 'this tweet will be deleted'
+    });
+
+    return request(app)
+      .delete(`/api/v1/tweets/${tweet._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          handle: 'jennagoldman',
+          text: 'this tweet will be deleted',
+          __v: 0
+        });
+      });
+  });
 });
