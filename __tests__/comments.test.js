@@ -75,4 +75,30 @@ describe('comment routes', () => {
         });
       });
   });
+
+  it('updates a comment by id', async() => {
+    const tweet = await Tweet.create({
+      handle: 'jennagoldman',
+      text: 'test tweet'
+    });
+
+    const comment = await Comment.create({
+      tweetId: tweet.id,
+      handle: 'chelseaspangler',
+      text: 'teehee'
+    });
+
+    return request(app)
+      .patch(`/api/v1/comments/${comment._id}`)
+      .send({ text: 'haha' })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          tweetId: tweet.id,
+          handle: 'chelseaspangler',
+          text: 'haha',
+          __v: 0
+        });
+      });
+  });
 });
