@@ -24,13 +24,30 @@ describe('tweet routes', () => {
       .post('/api/v1/tweets')
       .send({
         handle: 'jennagoldman',
-        text: 'this is a test tweet'
+        text: 'this is a tweet'
       })
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
           handle: 'jennagoldman',
-          text: 'this is a test tweet',
+          text: 'this is a tweet',
+          __v: 0
+        });
+      });
+  });
+
+  it('creates a tweet with a random quote', () => {
+    return request(app)
+      .post('/api/v1/tweets')
+      .send({
+        handle: 'jennagoldman',
+        text: ''
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          handle: 'jennagoldman',
+          text: expect.any(String),
           __v: 0
         });
       });
